@@ -1,0 +1,347 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Enterprise Risk Intelligence v3.0{% endblock %}
+
+{% block content %}
+<div class="row g-4 animate-fade">
+    <!-- Input Form with Persistence -->
+    <div class="col-lg-5">
+        <div class="card-glass h-100">
+            <h5 class="fw-bold mb-4"><i class="fas fa-id-card me-2 text-primary"></i>Applicant Profile</h5>
+            <form action="/predict" method="post">
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="income" id="income"
+                                value="{{ form_data.income if form_data else '' }}" required>
+                            <label for="income">Annual Income ($)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="loan_amnt" id="loan_amnt"
+                                value="{{ form_data.loan_amnt if form_data else '' }}" required>
+                            <label for="loan_amnt">Loan Amount Requested ($)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="age" id="age"
+                                value="{{ form_data.age if form_data else '' }}" required>
+                            <label for="age">Applicant Age</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="emp_length" id="emp_length"
+                                value="{{ form_data.emp_length if form_data else '' }}" required>
+                            <label for="emp_length">Experience (Years)</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="grade" id="grade" required>
+                                <option value="A" {% if form_data and form_data.grade=='A' %}selected{% endif %}>Grade A
+                                </option>
+                                <option value="B" {% if form_data and form_data.grade=='B' %}selected{% endif %}>Grade B
+                                </option>
+                                <option value="C" {% if form_data and form_data.grade=='C' %}selected{% endif %}>Grade C
+                                </option>
+                                <option value="D" {% if form_data and form_data.grade=='D' %}selected{% endif %}>Grade D
+                                </option>
+                                <option value="E" {% if form_data and form_data.grade=='E' %}selected{% endif %}>Grade E
+                                </option>
+                                <option value="F" {% if form_data and form_data.grade=='F' %}selected{% endif %}>Grade F
+                                </option>
+                                <option value="G" {% if form_data and form_data.grade=='G' %}selected{% endif %}>Grade G
+                                </option>
+                            </select>
+                            <label for="grade">Credit Grade</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="loan_term" id="loan_term" required>
+                                <option value="36" {% if form_data and form_data.loan_term=='36' %}selected{% endif %}>
+                                    36 Months</option>
+                                <option value="60" {% if form_data and form_data.loan_term=='60' %}selected{% endif %}>
+                                    60 Months</option>
+                            </select>
+                            <label for="loan_term">Loan Term</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="home_ownership" id="home_ownership" required>
+                                <option value="RENT" {% if form_data and form_data.home_ownership=='RENT' %}selected{%
+                                    endif %}>RENT</option>
+                                <option value="MORTGAGE" {% if form_data and form_data.home_ownership=='MORTGAGE'
+                                    %}selected{% endif %}>MORTGAGE</option>
+                                <option value="OWN" {% if form_data and form_data.home_ownership=='OWN' %}selected{%
+                                    endif %}>OWN</option>
+                                <option value="OTHER" {% if form_data and form_data.home_ownership=='OTHER' %}selected{%
+                                    endif %}>OTHER</option>
+                            </select>
+                            <label for="home_ownership">Home Ownership</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                            <select class="form-select" name="loan_intent" id="loan_intent" required>
+                                <option value="PERSONAL" {% if form_data and form_data.loan_intent=='PERSONAL'
+                                    %}selected{% endif %}>PERSONAL</option>
+                                <option value="EDUCATION" {% if form_data and form_data.loan_intent=='EDUCATION'
+                                    %}selected{% endif %}>EDUCATION</option>
+                                <option value="MEDICAL" {% if form_data and form_data.loan_intent=='MEDICAL'
+                                    %}selected{% endif %}>MEDICAL</option>
+                                <option value="VENTURE" {% if form_data and form_data.loan_intent=='VENTURE'
+                                    %}selected{% endif %}>VENTURE</option>
+                                <option value="HOMEIMPROVEMENT" {% if form_data and
+                                    form_data.loan_intent=='HOMEIMPROVEMENT' %}selected{% endif %}>HOME IMPROVEMENT
+                                </option>
+                                <option value="DEBTCONSOLIDATION" {% if form_data and
+                                    form_data.loan_intent=='DEBTCONSOLIDATION' %}selected{% endif %}>DEBT CONSOLIDATION
+                                </option>
+                            </select>
+                            <label for="loan_intent">Loan Intent</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" name="cred_hist" id="cred_hist"
+                                value="{{ form_data.cred_hist if form_data else '' }}" required>
+                            <label for="cred_hist">Credit History Length (Years)</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary-fintech w-100 mt-3 text-white">
+                    <i class="fas fa-brain me-2"></i> Execute Analysis
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="col-lg-7">
+        <div class="card-glass h-100 d-flex flex-column align-items-center justify-content-center text-center">
+            {% if prediction %}
+            <div class="w-100 text-start mb-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold mb-0"><i class="fas fa-microchip me-2 text-primary"></i>Risk Intelligence Outcome
+                    </h5>
+                    <p class="text-muted small mb-0">SHAP Explainability • Isotonic Calibration • v3.0</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill small">
+                        <i class="fas fa-code-branch me-1"></i> API Ready
+                    </span>
+                </div>
+            </div>
+
+            <div class="probability-container w-100">
+                <div class="circle-wrapper">
+                    <div class="progress-circle"
+                        style="--value: {{ probability_percent }}; --risk-color: {{ risk_color }};">
+                        <div class="progress-text-inner">
+                            <span class="progress-value-inner">{{ probability_percent }}%</span>
+                            <span class="progress-label-inner">Probability</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="probability-description">
+                    <p class="mb-0">Calibrated Default Probability (12-Month Horizon)</p>
+                </div>
+
+                <span class="confidence-badge">
+                    <i class="fas fa-check-double me-1"></i> Model Confidence: High
+                </span>
+
+                <div class="decision-label mt-4">
+                    <span id="risk-category-badge" class="badge badge-glow"
+                        style="background: {{ risk_color }}33; color: {{ risk_color }}; box-shadow: 0 0 15px {{ risk_color }}66;">
+                        <i class="fas fa-shield-alt me-2"></i> {{ risk_cat | upper }}
+                    </span>
+                    <h2 id="decision-text" class="fw-extrabold mt-3 mb-0" style="color: {{ risk_color }};">
+                        {{ decision_status }}
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Enterprise v3.0: Threshold Control Slider -->
+            <div class="w-100 px-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="small fw-bold text-muted text-uppercase tracking-wider">Credit Policy Threshold
+                        Control</label>
+                    <span id="threshold-val" class="badge bg-dark text-white">0.50</span>
+                </div>
+                <input type="range" class="form-range custom-range" id="threshold-slider" min="0.3" max="0.8"
+                    step="0.01" value="0.5">
+                <div class="btn-group w-100 mt-2 risk-presets" role="group">
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                        onclick="setThreshold(0.35)">Conservative</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                        onclick="setThreshold(0.55)">Balanced</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                        onclick="setThreshold(0.85)">Aggressive</button>
+                </div>
+            </div>
+
+            <!-- Enterprise v3.0: Business Impact & SHAP -->
+            <div class="row w-100 g-4 mb-4">
+                <div class="col-md-12">
+                    <div class="p-4 bg-light rounded-4 text-start h-100 border-start border-4 border-primary shadow-sm">
+                        <h6 class="fw-bold small mb-3 text-primary"><i class="fas fa-chart-line me-2"></i>Credit
+                            Decision Financial Impact</h6>
+                        <div class="d-flex justify-content-between align-items-center financial-impact">
+                            <div class="flex-fill text-center border-end">
+                                <p class="text-muted small mb-0">Expected Loss</p>
+                                <h5 class="fw-bold text-danger mb-0">{{ expected_loss }}</h5>
+                            </div>
+                            <div class="flex-fill text-center border-end">
+                                <p class="text-muted small mb-0">Annual ROI</p>
+                                <h5 class="fw-bold text-success mb-0">{{ roi }}</h5>
+                            </div>
+                            <div class="flex-fill text-center">
+                                <p class="text-muted small mb-0">Decision Status</p>
+                                <h5 class="fw-bold text-primary mb-0" id="decision-status-val">Approved – Low Risk</h5>
+                            </div>
+                        </div>
+                        <p class="x-small text-muted mt-3 mb-0 text-center opacity-75" style="font-size: 11px;">
+                            Risk-Adjusted Return Analysis based on PD × LGD × Exposure modeling
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-light rounded-4 text-start h-100">
+                        <h6 class="fw-bold small mb-3 text-primary"><i class="fas fa-brain me-2"></i>Explainability
+                            Factors (SHAP)</h6>
+                        <ul class="list-unstyled mb-0">
+                            {% set display_map = {
+                            'inter_grade_cred': 'Grade-History Interaction',
+                            'inter_incratio_term': 'Income-Term Interaction',
+                            'inter_lti_term': 'LTI-Term Interaction',
+                            'grade_num': 'Credit Grade Score',
+                            'person_income': 'Annual Income',
+                            'person_age': 'Age Factor',
+                            'loan_amnt': 'Loan Amount',
+                            'loan_percent_income': 'Loan-to-Income Ratio',
+                            'loan_intent_personal': 'Loan Purpose: Personal',
+                            'loan_intent_education': 'Loan Purpose: Education',
+                            'loan_intent_medical': 'Loan Purpose: Medical',
+                            'loan_intent_venture': 'Loan Purpose: Venture',
+                            'loan_intent_homeimprovement': 'Loan Purpose: Home Improvement',
+                            'loan_intent_debtconsolidation': 'Loan Purpose: Debt Consolidation'
+                            } %}
+                            {% for factor in factors %}
+                            <li class="small mb-2 d-flex justify-content-between align-items-center">
+                                <span class="text-muted"><i class="fas fa-caret-right text-primary me-2"></i>
+                                    {{ display_map.get(factor.raw_name, factor.name) }}
+                                </span>
+                                <span class="fw-bold {{ factor.color }}">{{ factor.val }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-light rounded-4 text-start h-100 position-relative shap-visual-container">
+                        <h6 class="fw-bold small mb-2 text-warning"><i class="fas fa-wand-magic-sparkles me-2"></i>SHAP
+                            Visual</h6>
+                        <img src="{{ url_for('static', filename='charts/latest_shap.png') }}"
+                            class="img-fluid rounded-3 shadow-sm border shap-visual" alt="SHAP Plot"
+                            style="background: #111;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3">
+                <a href="/predict" class="btn btn-outline-secondary btn-sm px-4">
+                    <i class="fas fa-sync-alt me-1"></i> New Assessment
+                </a>
+                <button class="btn btn-primary-fintech btn-sm px-4 text-white" onclick="window.print()">
+                    <i class="fas fa-file-pdf me-1"></i> Export Report (PDF)
+                </button>
+            </div>
+
+            <script>
+                const currentProb = {{ prob }};
+                const safetyCapTriggered = {{ 'true' if safety_cap else 'false' }};
+                const slider = document.getElementById('threshold-slider');
+                const thresholdVal = document.getElementById('threshold-val');
+                const decisionText = document.getElementById('decision-text');
+                const riskCatBadge = document.getElementById('risk-category-badge');
+
+                function updateDecision() {
+                    const threshold = parseFloat(slider.value);
+                    thresholdVal.innerText = threshold.toFixed(2);
+                    const statusVal = document.getElementById('decision-status-val');
+
+                    let riskBand = "";
+                    let riskColor = "";
+                    let decision = "";
+
+                    // Enterprise Risk Bands
+                    if (currentProb < 0.05) { riskBand = "Very Low Risk"; riskColor = "#16a34a"; }
+                    else if (currentProb < 0.15) { riskBand = "Low Risk"; riskColor = "#16a34a"; }
+                    else if (currentProb < 0.25) { riskBand = "Medium Risk"; riskColor = "#f59e0b"; }
+                    else if (currentProb < 0.40) { riskBand = "High Risk"; riskColor = "#dc2626"; }
+                    else { riskBand = "Critical Risk"; riskColor = "#dc2626"; }
+
+                    // Tiered Decision Logic
+                    if (currentProb < threshold && currentProb < 0.25) {
+                        decision = "APPROVE";
+                    } else if (currentProb < threshold && currentProb < 0.40) {
+                        decision = "REVIEW REQUIRED";
+                    } else {
+                        decision = "REJECT";
+                    }
+
+                    // Apply Safety Cap Override if triggered server-side
+                    if (safetyCapTriggered) {
+                        decision = "REJECT";
+                        riskBand = "Critical Risk (Safety Cap Triggered)";
+                        riskColor = "#dc2626";
+                    }
+
+                    // Update UI Elements
+                    decisionText.innerText = `${decision} – ${riskBand}`;
+                    decisionText.style.color = riskColor;
+
+                    riskCatBadge.style.color = riskColor;
+                    riskCatBadge.style.background = riskColor + "33";
+                    riskCatBadge.style.boxShadow = `0 0 15px ${riskColor}66`;
+                    riskCatBadge.innerHTML = `<i class="fas fa-shield-alt me-2"></i> ${riskBand.toUpperCase()}`;
+
+                    if (statusVal) {
+                        statusVal.innerText = `${decision} – ${riskBand}`;
+                        statusVal.style.color = riskColor;
+                    }
+                }
+
+                function setThreshold(val) {
+                    slider.value = val;
+                    updateDecision();
+                }
+
+                slider.oninput = updateDecision;
+                window.onload = updateDecision;
+            </script>
+
+            {% else %}
+            {% if error %}
+            <div class="alert alert-danger w-100 mb-4 text-start">
+                <h6 class="fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>Assessment Failure</h6>
+                <p class="small mb-0">{{ error }}</p>
+            </div>
+            {% endif %}
+            <div class="text-center py-5 opacity-50">
+                <i class="fas fa-shield-halved fa-5x mb-4 text-primary"></i>
+                <h5 class="fw-bold">Awaiting applicant profile</h5>
+                <p class="small px-5">Enter financial and demographic data to execute the calibrated risk logic.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
