@@ -114,6 +114,10 @@ Here is a preview of the Master Enterprise v3.0 platform in action:
 ### Executive Dashboard (Portfolio Overview)
 ![Executive Dashboard](static/screenshots/dashboard_v3.png)
 
+![Executive Dashboard](static/screenshots/dashboard_v3.1.png)
+
+![Executive Dashboard](static/screenshots/dashboard_v3.2.png)
+
 ### Risk Assessment Tool (Input Form)
 ![Input Form](static/screenshots/input_form_v3.png)
 
