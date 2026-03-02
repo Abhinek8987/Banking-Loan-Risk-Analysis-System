@@ -112,13 +112,16 @@ sequenceDiagram
 Here is a preview of the Master Enterprise v3.0 platform in action:
 
 ### Executive Dashboard (Portfolio Overview)
-![Executive Dashboard](static/screenshots/dashboard.png)
+![Executive Dashboard](static/screenshots/dashboard_v3.png)
 
-### Risk Assessment Tool (Individual Applicant)
-![Risk Assessment Tool](static/screenshots/risk_assessment.png)
+### Risk Assessment Tool (Input Form)
+![Input Form](static/screenshots/input_form_v3.png)
+
+### Risk Assessment Tool (Decision & Probability Breakdown)
+![Decision & Probability](static/screenshots/results_top_v3.png)
 
 ### SHAP Explainability & Financial Intelligence
-![SHAP Explainability](static/screenshots/risk_assessment_shap.png)
+![SHAP Explainability](static/screenshots/results_bottom_v3.png)
 
 ## Project Outputs
 - **Explainability**: `shap_explainer.joblib` & `latest_shap.png`
